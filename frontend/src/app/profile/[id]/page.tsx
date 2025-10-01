@@ -143,102 +143,112 @@ export default function ProfileUserPage() {
           <div className="lg:w-80 flex-shrink-0">
             <div className="sticky top-8 space-y-6">
               {/* Profile Card */}
-              <Card className="bg-white dark:bg-gray-800 border-none shadow-none bg-gray-100 dark:bg-gray-800">
-                <CardContent className="p-6">
-                  <div className="text-center space-y-4">
+              <Card className="bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-gray-700 shadow-2xl rounded-3xl overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="text-center space-y-6">
                     {/* Avatar */}
                     <div className="flex justify-center">
-                      <Avatar className="w-24 h-24 border-4 border-white dark:border-gray-700 shadow-lg">
-                        {profile.avatar ? (
-                          <AvatarImage src={profile.avatar} alt={profile.name} />
-                        ) : (
-                          <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                            {getInitials(profile.name)}
-                          </AvatarFallback>
-                        )}
-                      </Avatar>
+                      <div className="relative">
+                        <Avatar className="w-32 h-32 border-4 border-white dark:border-gray-700 shadow-2xl ring-4 ring-primary-200 dark:ring-primary-800">
+                          {profile.avatar ? (
+                            <AvatarImage src={profile.avatar} alt={profile.name} />
+                          ) : (
+                            <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary-600 via-secondary-600 to-secondary-700 text-white">
+                              {getInitials(profile.name)}
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center shadow-lg">
+                          <span className="text-white text-lg">✓</span>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Name & Bio */}
                     <div>
-                      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-600 via-secondary-600 to-secondary-700 bg-clip-text text-transparent mb-4 tracking-tight">
                         {profile.name}
                       </h1>
                       {profile.bio && (
-                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed px-4">
                           {profile.bio}
                         </p>
                       )}
                     </div>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                      <div className="text-center">
-                        <div className="flex items-center justify-center space-x-1 text-gray-600 dark:text-gray-400 mb-1">
-                          <FileText className="w-4 h-4" />
+                    <div className="grid grid-cols-2 gap-4 pt-6 border-t-2 border-primary-200 dark:border-gray-700">
+                      <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-2xl shadow-md border-2 border-primary-100 dark:border-gray-600 hover:scale-105 transition-transform">
+                        <div className="flex items-center justify-center space-x-1 text-primary-600 dark:text-primary-400 mb-2">
+                          <FileText className="w-6 h-6" />
                         </div>
-                        <div className="font-bold text-lg text-gray-900 dark:text-white">
+                        <div className="font-bold text-3xl text-gray-900 dark:text-white mb-1">
                           {profile.stats.totalPosts}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                           Bài viết
                         </div>
                       </div>
-                      <div className="text-center">
-                        <div className="flex items-center justify-center space-x-1 text-gray-600 dark:text-gray-400 mb-1">
-                          <Eye className="w-4 h-4" />
+                      <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-2xl shadow-md border-2 border-secondary-100 dark:border-gray-600 hover:scale-105 transition-transform">
+                        <div className="flex items-center justify-center space-x-1 text-secondary-600 dark:text-secondary-400 mb-2">
+                          <Eye className="w-6 h-6" />
                         </div>
-                        <div className="font-bold text-lg text-gray-900 dark:text-white">
+                        <div className="font-bold text-3xl text-gray-900 dark:text-white mb-1">
                           {profile.stats.totalViews.toLocaleString()}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                           Lượt xem
                         </div>
                       </div>
                     </div>
 
                     {/* Join Date */}
-                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400 pt-2">
-                      <Calendar className="w-4 h-4" />
+                    <div className="flex items-center justify-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-400 pt-4 px-4 py-3 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
+                      <Calendar className="w-5 h-5 text-primary-600" />
                       <span>Tham gia {formatDate(profile.createdAt)}</span>
                     </div>
 
                     {/* Social Links */}
-                    {profile.socialLinks ? (
-                      <div className="flex items-center justify-center space-x-2 pt-4">
-                        {profile.socialLinks.website && profile.socialLinks.website.includes('facebook.com') && (
-                          <a href={profile.socialLinks.website} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm" className="p-2 border-none bg-blue-600 text-white">
-                              <FacebookIcon className="w-4 h-4" />
-                            </Button>
-                          </a>
-                        )}
-                        {profile.socialLinks.twitter && profile.socialLinks.twitter.includes('x.com') && (
-                          <a href={profile.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm" className="p-2 border-none bg-black text-white">
-                              <XIcon className="w-4 h-4" />
-                            </Button>
-                          </a>
-                        )}
-                        {profile.socialLinks.linkedin && profile.socialLinks.linkedin.includes('linkedin.com') && (
-                          <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm" className="p-2 border-none bg-blue-600 text-white">
-                              <LinkedInIcon className="w-4 h-4" />
-                            </Button>
-                          </a>
-                        )}
-                        {profile.socialLinks.github && profile.socialLinks.github.includes('github.com') && (
-                          <a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm" className="p-2 border-none bg-black text-white">
-                              <GitHubIcon className="w-4 h-4" />
-                            </Button>
-                          </a>
-                        )}
+                    {profile.socialLinks && Object.values(profile.socialLinks).some(link => link) ? (
+                      <div className="pt-4">
+                        <p className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
+                          🔗 Mạng xã hội
+                        </p>
+                        <div className="flex items-center justify-center space-x-3">
+                          {profile.socialLinks.website && profile.socialLinks.website.includes('facebook.com') && (
+                            <a href={profile.socialLinks.website} target="_blank" rel="noopener noreferrer">
+                              <Button size="lg" className="w-12 h-12 p-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110">
+                                <FacebookIcon className="w-6 h-6" />
+                              </Button>
+                            </a>
+                          )}
+                          {profile.socialLinks.twitter && profile.socialLinks.twitter.includes('x.com') && (
+                            <a href={profile.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
+                              <Button size="lg" className="w-12 h-12 p-0 rounded-xl bg-black hover:bg-gray-800 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110">
+                                <XIcon className="w-6 h-6" />
+                              </Button>
+                            </a>
+                          )}
+                          {profile.socialLinks.linkedin && profile.socialLinks.linkedin.includes('linkedin.com') && (
+                            <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                              <Button size="lg" className="w-12 h-12 p-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110">
+                                <LinkedInIcon className="w-6 h-6" />
+                              </Button>
+                            </a>
+                          )}
+                          {profile.socialLinks.github && profile.socialLinks.github.includes('github.com') && (
+                            <a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer">
+                              <Button size="lg" className="w-12 h-12 p-0 rounded-xl bg-gray-800 hover:bg-black text-white shadow-lg hover:shadow-xl transition-all hover:scale-110">
+                                <GitHubIcon className="w-6 h-6" />
+                              </Button>
+                            </a>
+                          )}
+                        </div>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center space-x-2 pt-4">
+                      <div className="flex items-center justify-center space-x-2 pt-4 px-4 py-3 bg-gray-100 dark:bg-gray-700/50 rounded-xl">
                         <span className="text-sm text-gray-500 dark:text-gray-400">
-                          Người dùng này chưa liên kết mạng xã hội
+                          Chưa liên kết mạng xã hội
                         </span>
                       </div>
                     )}
@@ -250,14 +260,16 @@ export default function ProfileUserPage() {
 
           {/* Main Content - Posts Section */}
           <div className="flex-1 min-w-0">
-        <div className="p-4 mb-4 rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            Bài viết
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            {posts.pagination.totalItems} bài viết đã được xuất bản
-          </p>
-        </div>
+            <Card className="mb-8 bg-gradient-to-r from-primary-600 via-secondary-600 to-secondary-700 border-0 shadow-2xl">
+              <CardContent className="p-8">
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  📝 Bài viết của {profile.name}
+                </h2>
+                <p className="text-white/90 text-lg">
+                  {posts.pagination.totalItems} bài viết đã được xuất bản
+                </p>
+              </CardContent>
+            </Card>
 
         {loadingPosts ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -284,55 +296,62 @@ export default function ProfileUserPage() {
 
             {/* Pagination */}
             {posts.pagination.totalPages > 1 && (
-              <div className="flex items-center justify-center space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={() => loadPosts(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="flex items-center space-x-1"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span>Trước</span>
-                </Button>
+              <div className="flex items-center justify-center mt-12">
+                <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
+                  <Button
+                    variant="outline"
+                    onClick={() => loadPosts(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-2 px-6 h-12 rounded-xl font-bold border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 disabled:opacity-50"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                    <span>Trước</span>
+                  </Button>
 
-                <div className="flex items-center space-x-1">
-                  {Array.from({ length: Math.min(5, posts.pagination.totalPages) }, (_, i) => {
-                    const page = i + 1;
-                    return (
-                      <Button
-                        key={page}
-                        variant={currentPage === page ? "default" : "outline"}
-                        onClick={() => loadPosts(page)}
-                        size="sm"
-                        className={`${currentPage === page ? "bg-black text-white" : "bg-white text-black"}`}
-                      >
-                        {page}
-                      </Button>
-                    );
-                  })}
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: Math.min(5, posts.pagination.totalPages) }, (_, i) => {
+                      const page = i + 1;
+                      return (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "default" : "outline"}
+                          onClick={() => loadPosts(page)}
+                          size="lg"
+                          className={currentPage === page
+                            ? "bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-700 hover:to-secondary-700 shadow-lg font-bold min-w-[48px] h-12 rounded-xl"
+                            : "border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 font-semibold min-w-[48px] h-12 rounded-xl"
+                          }
+                        >
+                          {page}
+                        </Button>
+                      );
+                    })}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => loadPosts(currentPage + 1)}
+                    disabled={currentPage === posts.pagination.totalPages}
+                    className="flex items-center gap-2 px-6 h-12 rounded-xl font-bold border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 disabled:opacity-50"
+                  >
+                    <span>Sau</span>
+                    <ChevronRight className="w-5 h-5" />
+                  </Button>
                 </div>
-
-                <Button
-                  variant="outline"
-                  onClick={() => loadPosts(currentPage + 1)}
-                  disabled={currentPage === posts.pagination.totalPages}
-                  className="flex items-center space-x-1"
-                >
-                  <span>Sau</span>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
               </div>
             )}
           </>
         ) : (
-          <Card className="text-center py-12">
+          <Card className="text-center py-20 px-8 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 border-2 border-dashed border-primary-300 dark:border-gray-600">
             <CardContent>
-              <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <div className="w-24 h-24 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-12 h-12 text-primary-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 Chưa có bài viết nào
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {profile.name} chưa xuất bản bài viết nào.
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                {profile.name} chưa xuất bản bài viết nào. Hãy quay lại sau nhé! 📝
               </p>
             </CardContent>
           </Card>

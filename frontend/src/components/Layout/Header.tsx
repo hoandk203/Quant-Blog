@@ -88,7 +88,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="font-bold text-xl text-gray-900 dark:text-white">
+            <div className="font-bold text-xl bg-gradient-to-r from-primary-600 via-secondary-600 to-secondary-700 bg-clip-text text-transparent">
               <span className="hidden md:block">QuantBlog</span>
               <span className="md:hidden">QBlog</span>
             </div>
@@ -100,13 +100,16 @@ const Header: React.FC = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  item.active 
-                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  item.active
+                    ? 'bg-primary-600 text-white shadow-lg'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
                 }`}
               >
                 {item.label}
+                {item.active && (
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-primary-600 rounded-full"></div>
+                )}
               </Link>
             ))}
           </nav>
@@ -122,20 +125,21 @@ const Header: React.FC = () => {
                 <Search className="h-5 w-5" />
               </button>
             ) : (
-              <div className="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-xl p-2 shadow-lg border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-xl p-2 shadow-xl border border-gray-200 dark:border-gray-700 ring-2 ring-primary-500">
+                <Search className="h-5 w-5 text-gray-400 ml-2" />
                 <Input
                   type="text"
-                  placeholder="Tìm kiếm..."
+                  placeholder="Search posts, questions..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 border-0 bg-transparent focus:ring-0"
+                  className="w-64 border-0 bg-transparent focus:ring-0 placeholder:text-gray-400"
                   autoFocus
                 />
                 <button
                   type="submit"
                   onClick={handleSearchSubmit}
                   disabled={!searchQuery.trim()}
-                  className="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors disabled:opacity-50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="w-8 h-8 flex items-center justify-center text-primary-600 hover:text-primary-700 transition-colors disabled:opacity-50 disabled:text-gray-400 rounded-lg hover:bg-primary-50"
                 >
                   <Search className="h-4 w-4" />
                 </button>
@@ -162,7 +166,7 @@ const Header: React.FC = () => {
             {/* Write post button (authenticated users) */}
             {isAuthenticated && (
               <Link href="/posts/create">
-                <Button className="hidden md:flex bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:from-gray-800 hover:to-gray-600 shadow-lg">
+                <Button className="hidden md:flex bg-primary-600 hover:bg-primary-700 text-white shadow-xl transition-all duration-200">
                   <Edit className="h-4 w-4 mr-2" />
                   Viết bài
                 </Button>
@@ -176,13 +180,13 @@ const Header: React.FC = () => {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center space-x-2 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 p-0.5 shadow-lg">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-600 to-secondary-600 p-0.5 shadow-lg ring-2 ring-primary-600">
                     <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900">
                       {user.avatar ? (
                         <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                          <span className="text-sm font-bold text-primary-700 dark:text-primary-400">
                             {user.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -195,15 +199,15 @@ const Header: React.FC = () => {
                 {/* User dropdown menu */}
                 {userMenuOpen && (
                   <div className="absolute z-[60] right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+                    <div className="p-4 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-gray-800 dark:to-gray-700">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 p-0.5 shadow-lg">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-600 to-secondary-600 p-0.5 shadow-lg ring-2 ring-primary-600">
                           <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900">
                             {user.avatar ? (
                               <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
-                                <span className="text-lg font-bold text-gray-700 dark:text-gray-300">
+                                <span className="text-lg font-bold text-primary-700 dark:text-primary-400">
                                   {user.name.charAt(0).toUpperCase()}
                                 </span>
                               </div>
@@ -219,7 +223,7 @@ const Header: React.FC = () => {
                     <div className="p-2">
                       <Link
                         href="/profile"
-                        className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                        className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 rounded-xl transition-colors"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <User className="h-4 w-4 mr-3" />
@@ -228,7 +232,7 @@ const Header: React.FC = () => {
                       {user.role === 'admin' && (
                         <Link
                           href="/admin"
-                          className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                          className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 rounded-xl transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="h-4 w-4 mr-3" />
@@ -237,7 +241,7 @@ const Header: React.FC = () => {
                       )}
                       <Link
                         href="/my-posts"
-                        className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                        className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 rounded-xl transition-colors"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <FileText className="h-4 w-4 mr-3" />
@@ -259,12 +263,12 @@ const Header: React.FC = () => {
             ) : (
               <div className="hidden md:flex items-center space-x-3">
                 <Link href="/auth/login">
-                  <Button variant="ghost" className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <Button variant="ghost" className="hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400">
                     Đăng nhập
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button className="bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:from-gray-800 hover:to-gray-600 shadow-lg">
+                  <Button className="bg-primary-600 hover:bg-primary-700 text-white shadow-xl">
                     Đăng ký
                   </Button>
                 </Link>

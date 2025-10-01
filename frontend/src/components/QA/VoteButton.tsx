@@ -97,18 +97,18 @@ const VoteButton: React.FC<VoteButtonProps> = ({
   const netVotes = currentUpvotes - currentDownvotes;
 
   return (
-    <div className="flex flex-col items-center space-y-1">
+    <div className="flex flex-col items-center space-y-2">
       {/* Upvote Button */}
       <button
         onClick={() => handleVote(VoteType.UPVOTE)}
         disabled={isVoting}
         className={`
-          ${sizeClasses[size]} rounded-md border transition-all duration-200 flex items-center justify-center
+          ${sizeClasses[size]} rounded-lg border-2 transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md
           ${currentVoteStatus === VoteType.UPVOTE
-            ? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
-            : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-200 dark:hover:border-green-700 hover:text-green-600 dark:hover:text-green-400'
+            ? 'bg-primary-100 dark:bg-primary-900/30 border-primary-400 dark:border-primary-600 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50 scale-110'
+            : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-300 dark:hover:border-primary-600 hover:text-primary-600 dark:hover:text-primary-400'
           }
-          ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+          ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}
         `}
         title="Upvote"
       >
@@ -117,8 +117,8 @@ const VoteButton: React.FC<VoteButtonProps> = ({
 
       {/* Vote Count */}
       <div className={`
-        font-semibold ${size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-lg' : 'text-base'}
-        ${netVotes > 0 ? 'text-green-600 dark:text-green-400' : netVotes < 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'}
+        font-bold ${size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-xl' : 'text-lg'} px-2 py-1 rounded-lg
+        ${netVotes > 0 ? 'text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/20' : netVotes < 0 ? 'text-secondary-700 dark:text-secondary-300 bg-secondary-50 dark:bg-secondary-900/20' : 'text-gray-600 dark:text-gray-400'}
       `}>
         {netVotes > 0 ? `+${netVotes}` : netVotes}
       </div>
@@ -128,12 +128,12 @@ const VoteButton: React.FC<VoteButtonProps> = ({
         onClick={() => handleVote(VoteType.DOWNVOTE)}
         disabled={isVoting}
         className={`
-          ${sizeClasses[size]} rounded-md border transition-all duration-200 flex items-center justify-center
+          ${sizeClasses[size]} rounded-lg border-2 transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md
           ${currentVoteStatus === VoteType.DOWNVOTE
-            ? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
-            : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-200 dark:hover:border-red-700 hover:text-red-600 dark:hover:text-red-400'
+            ? 'bg-secondary-100 dark:bg-secondary-900/30 border-secondary-400 dark:border-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-200 dark:hover:bg-secondary-900/50 scale-110'
+            : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-secondary-50 dark:hover:bg-secondary-900/20 hover:border-secondary-300 dark:hover:border-secondary-600 hover:text-secondary-600 dark:hover:text-secondary-400'
           }
-          ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+          ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-110'}
         `}
         title="Downvote"
       >

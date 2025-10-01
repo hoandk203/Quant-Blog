@@ -361,66 +361,76 @@ export default function PostDetailPage() {
       )}
 
       {/* Category */}
-      <Badge 
-        variant="secondary" 
-        className="mb-4 text-blue-700 bg-blue-100"
+      <Badge
+        className="mb-4 bg-primary-600 text-white border-0 shadow-lg hover:bg-primary-700 transition-colors"
       >
         {post.category.name}
       </Badge>
 
       {/* Title */}
-      <h1 className="text-4xl font-bold mb-6 break-words">
+      <h1 className="text-4xl md:text-5xl font-bold mb-6 break-words leading-tight bg-gradient-to-r from-gray-900 via-primary-900 to-gray-900 dark:from-white dark:via-primary-200 dark:to-white bg-clip-text text-transparent">
         {post.title}
       </h1>
 
       {/* Meta info */}
-      <div className="flex items-center gap-6 text-gray-600 mb-6">
+      <div className="flex flex-wrap items-center gap-4 md:gap-6 text-gray-600 dark:text-gray-400 mb-8">
         <div className="flex items-center gap-2">
-          <AccessTime className="h-4 w-4" />
-          <span className="text-sm">
+          <AccessTime className="h-5 w-5 text-primary-600" />
+          <span className="text-sm font-medium">
             {calculateReadingTime(post.content)} phút đọc
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <Visibility className="h-4 w-4" />
-          <span className="text-sm">
+          <Visibility className="h-5 w-5 text-secondary-600" />
+          <span className="text-sm font-medium">
             {post.viewCount} lượt xem
           </span>
         </div>
-        <span className="text-sm">
+        <span className="text-sm font-medium">
           {formatDate(post.publishedAt)}
         </span>
       </div>
 
-      {/* Author */}
-      <div className="flex items-center justify-between mb-6">
-        <Link href={`/profile/${post.author.id}`}>
-          <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={post.author.avatar} alt={post.author.name} />
-              <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="font-semibold text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">{post.author.name}</h3>
-            </div>
+      {/* Author Card */}
+      <Card className="mb-8 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 border-primary-200 dark:border-gray-700">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <Link href={`/profile/${post.author.id}`}>
+              <div className="flex items-center gap-4 group">
+                <Avatar className="h-14 w-14 ring-2 ring-primary-200 dark:ring-primary-800 ring-offset-2 group-hover:ring-primary-400 transition-all">
+                  <AvatarImage src={post.author.avatar} alt={post.author.name} />
+                  <AvatarFallback className="bg-gradient-to-br from-primary-600 to-secondary-600 text-white text-lg font-bold">
+                    {post.author.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    {post.author.name}
+                  </h3>
+                  {post.author.bio && (
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
+                      {post.author.bio}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSavePost}
+              className="ml-auto hover:bg-primary-100 dark:hover:bg-primary-900/20"
+              title={saved ? 'Bỏ lưu' : 'Lưu bài viết'}
+            >
+              {saved ? (
+                <Bookmark className="h-6 w-6 text-primary-600" />
+              ) : (
+                <BookmarkBorder className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+              )}
+            </Button>
           </div>
-        </Link>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleSavePost}
-          className="ml-auto"
-          title={saved ? 'Bỏ lưu' : 'Lưu bài viết'}
-        >
-          {saved ? (
-            <Bookmark className="h-5 w-5 text-blue-600" />
-          ) : (
-            <BookmarkBorder className="h-5 w-5" />
-          )}
-        </Button>
-      </div>
-
-      <hr className="mb-6" />
+        </CardContent>
+      </Card>
 
       {/* Mobile Table of Contents */}
       {headings.length > 0 && (
@@ -435,9 +445,24 @@ export default function PostDetailPage() {
       )}
 
       {/* Content */}
-      <Card className="mb-6">
-        <CardContent className="p-6">
-          <div className="prose max-w-none [&_ul]:list-disc [&_ul]:ml-6 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:ml-6 [&_ol]:mb-4 [&_li]:mb-2 [&_li]:leading-7 [&_ul[data-type='taskList']]:list-none [&_ul[data-type='taskList']]:ml-0">
+      <Card className="mb-6 border-2 border-gray-200 dark:border-gray-700">
+        <CardContent className="p-8 md:p-10">
+          <div className="prose max-w-none
+            [&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-gray-800 [&_p]:dark:text-gray-200
+            [&_ul]:list-disc [&_ul]:ml-6 [&_ul]:mb-4 [&_ul]:text-lg [&_ul]:marker:text-primary-600
+            [&_ol]:list-decimal [&_ol]:ml-6 [&_ol]:mb-4 [&_ol]:text-lg [&_ol]:marker:text-primary-600
+            [&_li]:mb-2 [&_li]:leading-relaxed [&_li]:text-gray-800 [&_li]:dark:text-gray-200
+            [&_ul[data-type='taskList']]:list-none [&_ul[data-type='taskList']]:ml-0
+            [&_a]:text-primary-600 [&_a]:dark:text-primary-400 [&_a]:underline [&_a]:decoration-2 [&_a]:underline-offset-2 [&_a]:hover:text-primary-700 [&_a]:dark:hover:text-primary-300 [&_a]:transition-colors
+            [&_strong]:font-bold [&_strong]:text-gray-900 [&_strong]:dark:text-white
+            [&_em]:italic [&_em]:text-gray-700 [&_em]:dark:text-gray-300
+            [&_blockquote]:border-l-4 [&_blockquote]:border-primary-600 [&_blockquote]:bg-primary-50 [&_blockquote]:dark:bg-primary-900/10 [&_blockquote]:pl-6 [&_blockquote]:py-4 [&_blockquote]:my-6 [&_blockquote]:italic [&_blockquote]:text-gray-700 [&_blockquote]:dark:text-gray-300
+            [&_table]:w-full [&_table]:border-collapse [&_table]:my-6 [&_table]:text-base
+            [&_th]:bg-primary-600 [&_th]:text-white [&_th]:font-bold [&_th]:p-3 [&_th]:text-left [&_th]:border [&_th]:border-primary-700
+            [&_td]:p-3 [&_td]:border [&_td]:border-gray-300 [&_td]:dark:border-gray-600 [&_td]:text-gray-800 [&_td]:dark:text-gray-200
+            [&_tr:nth-child(even)]:bg-gray-50 [&_tr:nth-child(even)]:dark:bg-gray-800/50
+            [&_hr]:my-8 [&_hr]:border-t-2 [&_hr]:border-gray-300 [&_hr]:dark:border-gray-600
+          ">
             <ReactMarkdown
             components={{
               // Handle TipTap pre elements with data-language
@@ -558,7 +583,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 1);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 1, 0);
-                return <h1 id={id} className="text-4xl font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h1>;
+                return <h1 id={id} className="text-3xl font-bold mb-6 mt-8 text-gray-900 dark:text-white break-words scroll-mt-24" {...props}>{children}</h1>;
               },
 
               h2({node, children, ...props}: any) {
@@ -566,7 +591,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 2);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 2, 0);
-                return <h2 id={id} className="text-3xl font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h2>;
+                return <h2 id={id} className="text-2xl font-bold mb-5 mt-8 text-gray-900 dark:text-white break-words scroll-mt-24 border-b-2 border-primary-200 dark:border-primary-800 pb-2" {...props}>{children}</h2>;
               },
 
               h3({node, children, ...props}: any) {
@@ -574,7 +599,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 3);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 3, 0);
-                return <h3 id={id} className="text-2xl font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h3>;
+                return <h3 id={id} className="text-xl font-bold mb-4 mt-6 text-gray-900 dark:text-white break-words scroll-mt-24" {...props}>{children}</h3>;
               },
 
               h4({node, children, ...props}: any) {
@@ -582,7 +607,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 4);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 4, 0);
-                return <h4 id={id} className="text-xl font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h4>;
+                return <h4 id={id} className="text-lg font-bold mb-4 mt-6 text-gray-900 dark:text-white break-words scroll-mt-24" {...props}>{children}</h4>;
               },
 
               h5({node, children, ...props}: any) {
@@ -590,7 +615,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 5);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 5, 0);
-                return <h5 id={id} className="text-lg font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h5>;
+                return <h5 id={id} className="text-base font-bold mb-3 mt-5 text-gray-900 dark:text-white break-words scroll-mt-24" {...props}>{children}</h5>;
               },
 
               h6({node, children, ...props}: any) {
@@ -598,7 +623,7 @@ export default function PostDetailPage() {
                 const cleanText = text.trim();
                 const headingIndex = headings.findIndex(h => h.text === cleanText && h.level === 6);
                 const id = headingIndex >= 0 ? headings[headingIndex].id : generateHeadingId(cleanText, 6, 0);
-                return <h6 id={id} className="text-base font-bold mb-6 break-words scroll-mt-24" {...props}>{children}</h6>;
+                return <h6 id={id} className="text-base font-semibold mb-3 mt-5 text-gray-800 dark:text-gray-200 break-words scroll-mt-24" {...props}>{children}</h6>;
               },
 
               // Handle paragraphs with proper whitespace preservation
@@ -732,66 +757,74 @@ export default function PostDetailPage() {
       </Card>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-8">
         {post.tags.map((tag) => (
           <Badge
             key={tag.slug}
-            variant="outline"
+            className="bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 hover:bg-primary-200 dark:hover:bg-primary-900/30 px-4 py-2 rounded-full text-sm transition-colors border-0"
           >
-            {tag.name}
+            #{tag.name}
           </Badge>
         ))}
       </div>
 
-      <hr className="mb-6" />
+      {/* Actions Card */}
+      <Card className="mb-8 sticky bottom-4 z-10 shadow-2xl border-2 border-gray-200 dark:border-gray-700">
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <Button
+                variant={liked ? 'default' : 'outline'}
+                onClick={handleLike}
+                className="flex items-center gap-2 px-6 py-3 font-semibold transition-all hover:scale-105"
+              >
+                {liked ? <ThumbUp className="h-5 w-5" /> : <ThumbUpOutlined className="h-5 w-5" />}
+                <span className="hidden sm:inline">{likeCount} Thích</span>
+                <span className="sm:hidden">{likeCount}</span>
+              </Button>
+            </div>
 
-      {/* Actions */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Button
-            variant={liked ? 'default' : 'outline'}
-            onClick={handleLike}
-            className="flex items-center gap-2 dark:text-white"
-          >
-            {liked ? <ThumbUp className="h-4 w-4" /> : <ThumbUpOutlined className="h-4 w-4" />}
-            {likeCount} Thích
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => handleShare('facebook')}
-            className="text-blue-600 hover:text-blue-700"
-          >
-            <Facebook className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => handleShare('twitter')}
-            className="text-blue-400 hover:text-blue-500"
-          >
-            <Twitter className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => handleShare('linkedin')}
-            className="text-blue-700 hover:text-blue-800"
-          >
-            <LinkedIn className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => handleShare('copy')}
-          >
-            <Share className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleShare('facebook')}
+                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950 transition-all"
+                title="Chia sẻ lên Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleShare('twitter')}
+                className="text-blue-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-all"
+                title="Chia sẻ lên Twitter"
+              >
+                <Twitter className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleShare('linkedin')}
+                className="text-blue-700 hover:text-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950 transition-all"
+                title="Chia sẻ lên LinkedIn"
+              >
+                <LinkedIn className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleShare('copy')}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                title="Sao chép liên kết"
+              >
+                <Share className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       <PostComment postId={post.id} />
         </div>
         

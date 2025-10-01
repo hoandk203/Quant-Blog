@@ -244,8 +244,13 @@ export default function PostComment({ postId }: PostCommentProps) {
 
   return (
     <div className="mt-8">
-      <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-gray-100">
-        Bình luận ({comments.reduce((total, comment) => total + 1 + (comment.children?.length || 0), 0)})
+      <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 flex items-center gap-2">
+        <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+          Bình luận
+        </span>
+        <span className="text-gray-500 dark:text-gray-400 text-lg">
+          ({comments.reduce((total, comment) => total + 1 + (comment.children?.length || 0), 0)})
+        </span>
       </h3>
 
       {error && (
@@ -258,23 +263,23 @@ export default function PostComment({ postId }: PostCommentProps) {
 
       {/* Comment Form */}
       {isAuthenticated ? (
-        <div className="mb-6">
-          <div className="flex gap-3 items-start">
-            <Avatar className="w-10 h-10">
+        <div className="mb-8 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 rounded-2xl p-6 border-2 border-primary-200 dark:border-gray-700 shadow-lg">
+          <div className="flex gap-4 items-start">
+            <Avatar className="w-12 h-12 ring-2 ring-primary-200 dark:ring-primary-800 ring-offset-2">
               {user?.avatar ? (
                 <AvatarImage src={user?.avatar} alt={user?.name} />
               ) : (
-                <AvatarFallback className="bg-blue-500 text-white">
+                <AvatarFallback className="bg-gradient-to-br from-primary-600 to-secondary-600 text-white font-bold">
                   {user?.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               )}
             </Avatar>
             <div className="flex-1">
               <Textarea
-                placeholder="Viết bình luận..."
+                placeholder="Chia sẻ suy nghĩ của bạn..."
                 value={newComment}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewComment(e.target.value)}
-                className="resize-none rounded-3xl bg-gray-100 dark:bg-gray-700 border-none text-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 min-h-[48px]"
+                className="resize-none rounded-xl bg-white dark:bg-gray-700 border-2 border-primary-200 dark:border-gray-600 text-base focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 min-h-[100px] transition-all"
                 rows={3}
               />
 
@@ -298,7 +303,7 @@ export default function PostComment({ postId }: PostCommentProps) {
                 </div>
               )}
 
-              <div className="flex justify-between items-center mt-2">
+              <div className="flex justify-between items-center mt-4">
                 <div>
                   <input
                     accept="image/*"
@@ -308,30 +313,32 @@ export default function PostComment({ postId }: PostCommentProps) {
                     onChange={handleImageSelect}
                   />
                   <label htmlFor="image-upload">
-                    <div
-                      className="cursor-pointer bg-gray-200 rounded-full p-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    <Button
+                      variant="ghost"
+                      className="cursor-pointer bg-primary-100 hover:bg-primary-200 dark:bg-primary-900/20 dark:hover:bg-primary-900/30 rounded-xl p-3 text-primary-600 dark:text-primary-400 transition-all"
+                      asChild
                     >
                       <span>
                         <ImageIcon className="w-5 h-5" />
                       </span>
-                    </div>
+                    </Button>
                   </label>
                 </div>
 
                 <Button
                   onClick={submitComment}
                   disabled={submitting || !newComment.trim()}
-                  className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-3xl px-6 font-semibold"
+                  className="bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white rounded-xl px-8 py-3 font-bold shadow-lg hover:shadow-xl transition-all"
                 >
                   {submitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Đang gửi...
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Đăng
+                      <Send className="w-5 h-5 mr-2" />
+                      Đăng bình luận
                     </>
                   )}
                 </Button>

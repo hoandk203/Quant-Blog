@@ -38,68 +38,66 @@ export function PostCard({ post }: PostCardProps) {
   };
 
   return (
-      <Link href={`/posts/${post.slug}`}>
-    <Card className="group flex flex-col bg-gray-100 justify-between hover:shadow-lg h-full transition-all duration-300 border-0 dark:bg-gray-800 overflow-hidden">
-      <div className="relative">
+    <Link href={`/posts/${post.slug}`}>
+      <Card className="group flex flex-col bg-white dark:bg-gray-800 justify-between hover:shadow-xl hover:-translate-y-1 hover:border-primary-300 dark:hover:border-primary-700 h-full transition-all duration-200 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
         {post.featuredImage && (
-          <div className="relative h-36 overflow-hidden">
-            <img    
+          <div className="relative h-48 overflow-hidden">
+            <img
               src={post.featuredImage}
               alt={post.title}
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            <div className="absolute top-3 left-3">
+              <Badge className="bg-primary-600 text-white border-0 shadow-lg">
+                {post.category.name}
+              </Badge>
+            </div>
           </div>
         )}
-        <div className="absolute top-3 left-3">
-          <div 
-            className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-black text-white"
-          >
-            {post.category.name}
-          </div>
-        </div>
-      </div>
-      
-      <div className="p-3 mb-auto pb-0">
-        
-          <h3 className="text-md font-bold line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+
+        <div className="p-6 flex-1 flex flex-col">
+          <h3 className="text-xl md:text-2xl font-bold line-clamp-2 mb-3 text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-tight">
             {post.title}
           </h3>
-        
-        
-        <p className="text-gray-600 dark:text-gray-300 line-clamp-3 text-sm leading-relaxed">
-          {post.excerpt}
-        </p>
-      </div>
-      <CardContent className="p-3">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
-            <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
-              <div className="flex items-center space-x-1">
+
+          <p className="text-base text-gray-600 dark:text-gray-300 line-clamp-3 mb-4 leading-relaxed flex-1">
+            {post.excerpt}
+          </p>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {post.tags.slice(0, 3).map((tag) => (
+                <Badge
+                  key={tag.id}
+                  variant="secondary"
+                  className="bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 hover:bg-primary-200 dark:hover:bg-primary-900/30 px-3 py-1 rounded-full text-sm transition-colors"
+                >
+                  {tag.name}
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          {/* Meta Info */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                <span>{post.readingTime} phút đọc</span>
+                <span>{post.readingTime} phút</span>
               </div>
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
                 <span>{post.viewCount}</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <Heart className="w-4 h-4" />
-                <span>{post.likeCount}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <MessageCircle className="w-4 h-4" />
-                <span>{post.commentCount}</span>
-              </div>
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {formatDate(post.publishedAt)}
             </div>
           </div>
-          
-          <div className="text-xs text-gray-500 dark:text-gray-400">
-            {formatDate(post.publishedAt)}
-          </div>
         </div>
-      </CardContent>
-    </Card>
-      </Link>
+      </Card>
+    </Link>
   );
 } 

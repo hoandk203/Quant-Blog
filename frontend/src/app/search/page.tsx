@@ -183,74 +183,104 @@ export default function SearchPage() {
   }, [posts, sortBy]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Tìm kiếm</h1>
-        
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Hero Search Section */}
+      <div className="mb-12 bg-gradient-to-br from-primary-600 via-secondary-600 to-secondary-700 rounded-3xl p-8 md:p-12 shadow-2xl">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white text-center">
+          Tìm kiếm bài viết
+        </h1>
+        <p className="text-lg text-white/90 text-center mb-8">
+          Khám phá hàng ngàn bài viết về Quantitative Trading, Machine Learning và nhiều hơn nữa
+        </p>
+
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="mb-6">
+        <form onSubmit={handleSearch} className="max-w-3xl mx-auto">
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 h-6 w-6" />
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm kiếm bài viết..."
-              className="pl-10 w-full"
+              placeholder="Tìm kiếm theo tiêu đề, nội dung hoặc thẻ..."
+              className="pl-16 pr-6 h-16 text-lg rounded-2xl border-2 border-white/20 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-xl focus:ring-4 focus:ring-white/30 transition-all"
             />
+            {searchQuery && (
+              <Button
+                type="submit"
+                size="lg"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-accent-600 to-primary-600 hover:from-accent-700 hover:to-primary-700 text-white rounded-xl px-8 font-bold shadow-lg"
+              >
+                Tìm kiếm
+              </Button>
+            )}
           </div>
           {/* Hiển thị indicator khi đang debounce */}
           {searchQuery !== debouncedSearchQuery && searchQuery.trim() && (
-            <p className="text-sm text-gray-500 mt-2 ml-2">
-              Đang tìm kiếm...
+            <p className="text-sm text-white/80 mt-3 text-center flex items-center justify-center gap-2">
+              <span className="animate-pulse">⏳</span> Đang tìm kiếm...
             </p>
           )}
         </form>
+      </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          <div className="min-w-[200px]">
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue placeholder="Danh mục" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tất cả danh mục</SelectItem>
-                {categories.map((cat) => (
-                  <SelectItem key={cat.id} value={cat.slug}>
-                    {cat.name}
+      {/* Filters Bar */}
+      <Card className="mb-8 shadow-lg border-2 border-primary-100 dark:border-gray-700">
+        <CardContent className="p-6">
+          <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex-1 min-w-[250px]">
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 block">
+                🗂️ Danh mục
+              </label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="h-12 rounded-xl border-2 border-primary-200 dark:border-gray-600 focus:ring-2 focus:ring-primary-500">
+                  <SelectValue placeholder="Chọn danh mục" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">
+                    <span className="font-semibold">📚 Tất cả danh mục</span>
                   </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.slug}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="min-w-[200px]">
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sắp xếp" />
-              </SelectTrigger>
-              <SelectContent>
-                {sortOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex-1 min-w-[250px]">
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 block">
+                🔄 Sắp xếp theo
+              </label>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="h-12 rounded-xl border-2 border-secondary-200 dark:border-gray-600 focus:ring-2 focus:ring-secondary-500">
+                  <SelectValue placeholder="Chọn cách sắp xếp" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sortOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Search Results Count */}
-        {debouncedSearchQuery && !loading && (
-          <p className="text-gray-600 mb-6">
-            {pagination.totalItems > 0 
-              ? `Tìm thấy ${pagination.totalItems} kết quả cho "${debouncedSearchQuery}"`
-              : `Không tìm thấy kết quả nào cho "${debouncedSearchQuery}"`
+      {/* Search Results Count */}
+      {debouncedSearchQuery && !loading && (
+        <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl border-l-4 border-primary-600">
+          <p className="text-gray-800 dark:text-gray-200 font-semibold">
+            {pagination.totalItems > 0
+              ? `✅ Tìm thấy ${pagination.totalItems} kết quả cho "${debouncedSearchQuery}"`
+              : `❌ Không tìm thấy kết quả nào cho "${debouncedSearchQuery}"`
             }
           </p>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
 
       {/* Loading State */}
       {loading && (
@@ -278,15 +308,15 @@ export default function SearchPage() {
       {/* Search Results */}
       {!loading && sortedPosts.length > 0 && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedPosts.map((post) => (
-              <Card key={post.id} className="h-full flex flex-col relative hover:shadow-lg transition-shadow">
+              <Card key={post.id} className="group h-full flex flex-col relative bg-white dark:bg-gray-800 hover:shadow-2xl hover:-translate-y-2 hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 border-2 border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
                 {/* Save Button */}
                 {isAuthenticated && (
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-black/80"
+                    className="absolute top-3 right-3 z-10 bg-gradient-to-br from-black/70 to-black/60 hover:from-black/90 hover:to-black/80 rounded-xl backdrop-blur-sm shadow-lg"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -294,66 +324,71 @@ export default function SearchPage() {
                     }}
                   >
                     {saveStatus[post.slug] ? (
-                      <Bookmark className="h-4 w-4 text-white" />
+                      <Bookmark className="h-5 w-5 text-primary-400" />
                     ) : (
-                      <BookmarkBorder className="h-4 w-4 text-white" />
+                      <BookmarkBorder className="h-5 w-5 text-white" />
                     )}
                   </Button>
                 )}
 
                 <Link href={`/posts/${post.slug}`} className="flex flex-col h-full text-decoration-none">
                   {post.featuredImage && (
-                    <img
-                      src={post.featuredImage}
-                      alt={post.title}
-                      className="w-full h-48 object-cover"
-                    />
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
                   )}
-                  <CardContent className="flex-1 flex flex-col p-4">
+                  <CardContent className="flex-1 flex flex-col p-6">
                     <div className="mb-3">
-                      <Badge variant="secondary" className="mb-2">
+                      <Badge className="bg-primary-600 text-white border-0 shadow-lg hover:bg-primary-700 transition-colors">
                         {post.category?.name || ''}
                       </Badge>
                     </div>
-                    
-                    <h3 className="text-lg font-semibold mb-2 line-clamp-2">
+
+                    <h3 className="text-xl font-bold mb-3 line-clamp-2 text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-tight">
                       {post.title}
                     </h3>
-                    
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+
+                    <p className="text-gray-600 dark:text-gray-300 text-base mb-4 line-clamp-3 flex-1 leading-relaxed">
                       {post.excerpt}
                     </p>
 
-                    <div className="flex items-center mb-3">
-                      <Avatar className="h-6 w-6 mr-2">
+                    <div className="flex items-center mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <Avatar className="h-8 w-8 mr-3 ring-2 ring-primary-200 dark:ring-primary-800">
                         <AvatarImage src={post.author?.avatar || ''} alt={post.author?.name || ''} />
-                        <AvatarFallback>{post.author?.name?.charAt(0) || 'U'}</AvatarFallback>
+                        <AvatarFallback className="bg-gradient-to-br from-primary-600 to-secondary-600 text-white font-bold">
+                          {post.author?.name?.charAt(0) || 'U'}
+                        </AvatarFallback>
                       </Avatar>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         {post.author?.name}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <AccessTime className="h-3 w-3" />
-                        <span>{post.readingTime || calculateReadingTime(post.content)} phút</span>
+                    <div className="flex justify-between items-center text-sm">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <AccessTime className="h-4 w-4 text-primary-600" />
+                        <span className="font-medium">{post.readingTime || calculateReadingTime(post.content)} phút đọc</span>
                       </div>
-                      
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Visibility className="h-3 w-3" />
-                          <span>{post.viewCount || 0}</span>
+
+                      <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-1.5">
+                          <Visibility className="h-4 w-4 text-secondary-600" />
+                          <span className="font-bold">{post.viewCount || 0}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <ThumbUp className="h-3 w-3" />
-                          <span>{post.likeCount || 0}</span>
+                        <div className="flex items-center gap-1.5">
+                          <ThumbUp className="h-4 w-4 text-accent-600" />
+                          <span className="font-bold">{post.likeCount || 0}</span>
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-500 mt-2">
-                      {formatDate(post.publishedAt || post.createdAt)}
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 font-medium">
+                      📅 {formatDate(post.publishedAt || post.createdAt)}
                     </p>
                   </CardContent>
                 </Link>
@@ -363,14 +398,18 @@ export default function SearchPage() {
 
           {/* Pagination */}
           {pagination.totalPages > 1 && (
-            <div className="flex justify-center mt-8">
-              <div className="flex items-center gap-2">
+            <div className="flex justify-center mt-12">
+              <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
                 {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
                   <Button
                     key={page}
                     variant={page === pagination.currentPage ? "default" : "outline"}
-                    size="sm"
+                    size="lg"
                     onClick={() => handlePageChange({} as any, page)}
+                    className={page === pagination.currentPage
+                      ? "bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-700 hover:to-secondary-700 shadow-lg font-bold min-w-[48px] h-12 rounded-xl"
+                      : "border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 font-semibold min-w-[48px] h-12 rounded-xl"
+                    }
                   >
                     {page}
                   </Button>
@@ -383,27 +422,64 @@ export default function SearchPage() {
 
       {/* No Results */}
       {!loading && debouncedSearchQuery && sortedPosts.length === 0 && !error && (
-        <div className="text-center py-16">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Không tìm thấy kết quả
-          </h3>
-          <p className="text-gray-600">
-            Hãy thử tìm kiếm với từ khóa khác hoặc thay đổi bộ lọc
-          </p>
-        </div>
+        <Card className="text-center py-16 px-8 border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50">
+          <div className="max-w-md mx-auto">
+            <div className="w-24 h-24 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <SearchIcon className="h-12 w-12 text-primary-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              Không tìm thấy kết quả
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">
+              Hãy thử tìm kiếm với từ khóa khác hoặc thay đổi bộ lọc
+            </p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Badge variant="outline" className="text-sm px-4 py-2">
+                Thử từ khóa ngắn hơn
+              </Badge>
+              <Badge variant="outline" className="text-sm px-4 py-2">
+                Kiểm tra chính tả
+              </Badge>
+              <Badge variant="outline" className="text-sm px-4 py-2">
+                Thử danh mục khác
+              </Badge>
+            </div>
+          </div>
+        </Card>
       )}
 
       {/* Empty State */}
       {!loading && !debouncedSearchQuery && (
-        <div className="text-center py-16">
-          <SearchIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Nhập từ khóa để tìm kiếm
-          </h3>
-          <p className="text-gray-600">
-            Tìm kiếm bài viết theo tiêu đề, nội dung hoặc thẻ
-          </p>
-        </div>
+        <Card className="text-center py-20 px-8 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-gray-700">
+          <div className="max-w-2xl mx-auto">
+            <div className="w-32 h-32 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl transform rotate-6">
+              <SearchIcon className="h-16 w-16 text-white transform -rotate-6" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Bắt đầu tìm kiếm của bạn
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 text-xl mb-8">
+              Nhập từ khóa vào ô tìm kiếm phía trên để khám phá hàng ngàn bài viết chất lượng
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+              <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-md border border-primary-100 dark:border-gray-600">
+                <div className="text-2xl mb-2">📚</div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1">Theo tiêu đề</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Tìm bài viết qua tên</p>
+              </div>
+              <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-md border border-secondary-100 dark:border-gray-600">
+                <div className="text-2xl mb-2">🏷️</div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1">Theo thẻ</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Lọc theo chủ đề</p>
+              </div>
+              <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-md border border-accent-100 dark:border-gray-600">
+                <div className="text-2xl mb-2">📝</div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1">Theo nội dung</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Tìm trong bài viết</p>
+              </div>
+            </div>
+          </div>
+        </Card>
       )}
     </div>
   );
